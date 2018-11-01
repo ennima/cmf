@@ -2,6 +2,14 @@
 import os
 import xml.etree.ElementTree as ET
 
+"""
+CMF v 0.5
+Autor: Enrique Nieto Martínez
+Fecha: 10/10/2018
+La clase ayuda en la interpretación del conformado de un cmf
+
+"""
+
 
 class Cmf(object):
 	"""
@@ -21,11 +29,16 @@ class Cmf(object):
 		# print(metadata_file)
 		metadata_file_path = cmf_path+"\\"+metadata_file
 		if(os.path.exists(metadata_file_path)):
-			self.tree = ET.parse(metadata_file_path)
-			self.root = self.tree.getroot()
-			self._is_xml_load = True
+			try:
+				self.tree = ET.parse(metadata_file_path)
+			except:
+				print("except -------------")
+			else:
+				self.root = self.tree.getroot()
+				self._is_xml_load = True
 		else:
-			print("ERROR: No existe el cmf:",metadata_file_path)
+			pass
+			# print("ERROR: No existe el cmf:",metadata_file_path)
 
 
 	
@@ -74,7 +87,7 @@ class Cmf(object):
 		for child in self.root:
 			if(child.tag == 'Track'):
 				if(child.attrib['{http://www.w3.org/2001/XMLSchema-instance}type'] == 'AudioTrack'):
-					segment = child.find('Segment')
+					segment  = child.find('Segment')
 					hires_format = segment.find('HiResFormat')
 					audio_format = {'type':hires_format.attrib['AudioType'], 'sample_rate':hires_format.attrib['SampleRate']}
 				break
@@ -82,8 +95,8 @@ class Cmf(object):
 	
 		
 
-cmf = "X:\\Recup\\ENTREVISTA REBECA DE ALBA\\ENTREVISTA REBECA DE ALBA(2).cmf"
-my_cmf = Cmf(cmf)
-print(my_cmf.get_audio_format())
-print(my_cmf.get_construction())
+# cmf = "X:\\Recup\\ENTREVISTA REBECA DE ALBA\\ENTREVISTA REBECA DE ALBA(2).cmf"
+# my_cmf = Cmf(cmf)
+# print(my_cmf.get_audio_format())
+# print(my_cmf.get_construction())
 
