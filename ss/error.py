@@ -18,7 +18,8 @@ class Error(object):
 
 
 	def __init__(self):
-		print("Error init")
+		# print("Error init")
+		pass
 
 
 	def show(self, message):
@@ -29,8 +30,8 @@ class Error(object):
 			else:
 				print("### Error "+self.error_type+" ###: "+self.message)
 
-er = Error()
-er.error_type = "Hola"
+# er = Error()
+# er.error_type = "Hola"
 # er.show_support_data = False
-er.support_data = "Por favor contacte a soporte: \n Contacto: Enrique Nieto \n Corta: 23930 \n Oficina: (0155)51404900 Ext. 23972 \n WhatsApp: (55)12657501 \n E-mail: enrique.nieto@milenio.com"
-er.show("lor")
+# er.support_data = "Por favor contacte a soporte: \n Contacto: Enrique Nieto \n Corta: 23930 \n Oficina: (0155)51404900 Ext. 23972 \n WhatsApp: (55)12657501 \n E-mail: enrique.nieto@milenio.com"
+# er.show("lor")
