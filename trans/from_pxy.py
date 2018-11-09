@@ -40,10 +40,17 @@ def transcode_media(clip,path,FinalVideo,render_engine, temp_dir, stratus_obj):
 				
                 print("Existe el directorio de cache")
                 if("." in path):
-                	videoMerge = render_engine+' -y -i "'+clip+'" -vcodec mpeg2video -vtag xd5b -s 1920x1080 -aspect 16:9 -pix_fmt yuv420p -rtbufsize 50000k -b:v 50000k -dc 9 -flags +ilme+ildct -top 1 -f mxf "'+temp_dir+FinalVideo+'".mxf'
+                	if("." in temp_dir):
+                		videoMerge = render_engine+' -y -i "'+clip+'" -vcodec mpeg2video -vtag xd5b -s 1920x1080 -aspect 16:9 -pix_fmt yuv420p -rtbufsize 50000k -b:v 50000k -dc 9 -flags +ilme+ildct -top 1 -f mxf "'+FinalVideo+'".mxf'	
+                	else:
+                		videoMerge = render_engine+' -y -i "'+clip+'" -vcodec mpeg2video -vtag xd5b -s 1920x1080 -aspect 16:9 -pix_fmt yuv420p -rtbufsize 50000k -b:v 50000k -dc 9 -flags +ilme+ildct -top 1 -f mxf "'+temp_dir+FinalVideo+'".mxf'
                 else:
-	                # videoMerge = ffmpeg_path+'ffmpeg -i "'+path+clip+'" -vcodec mpeg2video -vtag xd5b -s 1920x1080 -pix_fmt yuv420p -r 29.97 -rtbufsize 50000k -b:v 50000k -dc 9 -flags +ilme+ildct -top 1 -acodec pcm_s16le -ac 4 -f mxf "'+temp_dir+FinalVideo+'".mxf'
-	                videoMerge = render_engine+' -y -i "'+path+"\\"+clip+'" -vcodec mpeg2video -vtag xd5b -s 1920x1080 -aspect 16:9 -pix_fmt yuv420p -rtbufsize 50000k -b:v 50000k -dc 9 -flags +ilme+ildct -top 1 -f mxf "'+temp_dir+FinalVideo+'".mxf'
+                	if("." in temp_dir):
+	              
+	                	videoMerge = render_engine+' -y -i "'+path+"\\"+clip+'" -vcodec mpeg2video -vtag xd5b -s 1920x1080 -aspect 16:9 -pix_fmt yuv420p -rtbufsize 50000k -b:v 50000k -dc 9 -flags +ilme+ildct -top 1 -f mxf "'+FinalVideo+'".mxf'
+
+	                else:
+	                	videoMerge = render_engine+' -y -i "'+path+"\\"+clip+'" -vcodec mpeg2video -vtag xd5b -s 1920x1080 -aspect 16:9 -pix_fmt yuv420p -rtbufsize 50000k -b:v 50000k -dc 9 -flags +ilme+ildct -top 1 -f mxf "'+temp_dir+FinalVideo+'".mxf'
                 print(videoMerge)
                
                 p = subprocess.Popen(videoMerge)
@@ -51,7 +58,10 @@ def transcode_media(clip,path,FinalVideo,render_engine, temp_dir, stratus_obj):
                 print("Enviando: "+temp_dir+FinalVideo)
                 test += 1
 
-                ftpSend(stratus_obj["stratus_ftp"],stratus_obj["stratus_ftp_user"],stratus_obj["stratus_ftp_pass"],stratus_obj["ingest_folder"],temp_dir+FinalVideo+'.mxf')
+                if("." in temp_dir):
+                	ftpSend(stratus_obj["stratus_ftp"],stratus_obj["stratus_ftp_user"],stratus_obj["stratus_ftp_pass"],stratus_obj["ingest_folder"],FinalVideo+'.mxf')
+                else:
+                	ftpSend(stratus_obj["stratus_ftp"],stratus_obj["stratus_ftp_user"],stratus_obj["stratus_ftp_pass"],stratus_obj["ingest_folder"],temp_dir+FinalVideo+'.mxf')
                 drive =""
                 
                 print(FinalVideo,' ingestado.')
@@ -60,7 +70,7 @@ def transcode_media(clip,path,FinalVideo,render_engine, temp_dir, stratus_obj):
                 if (temp_dir == "."):
                 	temp_dir = ""
         
-
+## ok
 def seconds_timestamp(seconds):
 	m, s = divmod(seconds, 60)
 	h, m = divmod(m, 60)																																																																															
@@ -90,24 +100,35 @@ def share_validate(drive_letter, pxy_server, pxy_path, share_user, share_pass):
 
 
 
-pxy_server  = "SMEX-PXYSVR"
-pxy_path = "proxy"
-share_user = "GVAdmin"
-share_pass = "adminGV!"
-drive_letter = "P"
+open_path = "conf.json"
+with open(open_path) as f:
+    conf = json.load(f)
+
+print(conf)
+pxy_server  = conf["pxy_server"]
+pxy_path = conf["pxy_path"]
+share_user = conf["share_user"]
+share_pass = conf["share_pass"]
+drive_letter = conf["drive_letter"]
+
+
+
+dst_path = conf["dst_path"]
+dst_name_file = conf["dst_name_file"]
+render_engine = conf["render_engine"]
+cache_dir = conf["cache_dir"]
+pxy_exists = share_validate(drive_letter, pxy_server, pxy_path, share_user, share_pass)
+
+stratus_obj = conf["stratus_ftp"]
 
 pxy_file_hash = "f55d8c7dff0644dcbfcce09b6811705d"
 pxy_file_hash = "e18e87aa772b4622a2f36380036e0c54"
-dst_path = "."
-dst_name_file = "metro_in"
-render_engine = "C:\\Users\\ennima\\Desktop\\ffXperiments\\render.exe"
-pxy_exists = share_validate(drive_letter, pxy_server, pxy_path, share_user, share_pass)
+dst_name_file = "lol"
 
-stratus_obj = {"stratus_ftp":"192.168.196.139","stratus_ftp_user":"mxfmovie","stratus_ftp_pass":"","ingest_folder":"test"}
 
 tiempo_inicial = time_i()
 
-
+# read origin
 if(pxy_exists):
 	print("Buscando PXY")
 	if(os.path.exists(drive_letter+":\\"+pxy_file_hash)):
@@ -115,7 +136,7 @@ if(pxy_exists):
 		if(os.path.exists(drive_letter+":\\"+pxy_file_hash+"\\proxy.mp4")):
 			print("Has Media")
 			shutil.copy2(drive_letter+":\\"+pxy_file_hash+"\\proxy.mp4", dst_path+"\\"+dst_name_file+".mp4")
-			transcode_media(dst_name_file+".mp4",dst_path,dst_path+"\\"+dst_name_file,render_engine,".",stratus_obj)
+			transcode_media(dst_name_file+".mp4",dst_path,dst_path+"\\"+dst_name_file,render_engine,cache_dir,stratus_obj)
 	else:
 		print("Not PXY")
 

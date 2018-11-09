@@ -182,11 +182,3 @@ class DeathCounter(object):
 
 		return is_counter
 
-dc = DeathCounter()
-dc.step = 7000003 * 1000000 * 666
-dc.set_max_step(100000)
-# print("Installed: ",dc.read_installed_dependency())
-# print("Counter: ",dc.read_counter_dependency())
-
-for i in range(0,100003):
-	print(str(i+1),"--",dc.run_death_counter())

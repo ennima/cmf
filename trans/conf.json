@@ -1,0 +1,17 @@
+{
+	"pxy_server":"SMEX-PXYSVR"
+	,"pxy_path": "proxy"
+	,"share_user": "GVAdmin"
+	,"share_pass": "adminGV!"
+	,"drive_letter": "P"
+	,"dst_path":"C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf\\trans\\tmp"
+	,"dst_name_file":"metro_in"
+	,"render_engine":"C:\\Users\\ennima\\Desktop\\ffXperiments\\render.exe"
+	,"stratus_ftp":{
+						"stratus_ftp":"192.168.196.139"
+						,"stratus_ftp_user":"mxfmovie"
+						,"stratus_ftp_pass":""
+						,"ingest_folder":"test"
+					}
+	,"cache_dir":"."
+}

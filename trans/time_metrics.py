@@ -37,7 +37,7 @@ class TimeMetrics(object):
 		return_value = {}
 		self.tiempo_final = time_i()
 		tiempo_ejecucion = self.tiempo_final - self.tiempo_inicial
-		print("Tardó: " , tiempo_ejecucion,"s")
+		# print("Tardó: " , tiempo_ejecucion,"s")
 		return_value["seconds"] = tiempo_ejecucion
 		return_value["string"] = self.seconds_timestamp(tiempo_ejecucion)
 		return return_value
