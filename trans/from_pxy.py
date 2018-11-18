@@ -51,7 +51,7 @@ def transcode_media(clip,path,FinalVideo,render_engine, temp_dir, stratus_obj):
 
 	                else:
 	                	videoMerge = render_engine+' -y -i "'+path+"\\"+clip+'" -vcodec mpeg2video -vtag xd5b -s 1920x1080 -aspect 16:9 -pix_fmt yuv420p -rtbufsize 50000k -b:v 50000k -dc 9 -flags +ilme+ildct -top 1 -f mxf "'+temp_dir+FinalVideo+'".mxf'
-                print(videoMerge)
+                # print(videoMerge)
                
                 p = subprocess.Popen(videoMerge)
                 p.wait()

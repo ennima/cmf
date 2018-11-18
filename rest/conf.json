@@ -1,0 +1,8 @@
+{
+	"stratus_ftp":{
+						"stratus_ftp":"192.168.196.139"
+						,"stratus_ftp_user":"movie"
+						,"stratus_ftp_pass":""
+						,"ingest_folder":"test"
+					}
+}
