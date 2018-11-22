@@ -23,7 +23,7 @@ def get_arguments():
 	
 	#Required
 	parser.add_argument("path", help="ruta de origen, carpeta que contiene la media a transcodificar, debe escribirse entre comillas. Ej.: \"ruta\" ")
-	parser.add_argument("muxer", help="preset de transcodificación")
+	parser.add_argument("--muxer", help="preset de transcodificación")
 	args = parser.parse_args()
 
 	# Validating arguments
@@ -93,11 +93,15 @@ def get_transcode_clips_list(origin_path):
 def load_muxer(mux_file):
 	if(os.path.exists(mux_file)):
 		# print("Existe Muxer")
+		
 		with open(mux_file) as muxer:
 			muxer_query_raw = muxer.read()
 
-		if("-i" in muxer_query_raw):
-			return muxer_query_raw
+		# print(muxer_query_raw)
+		muxer_data = json.loads(muxer_query_raw)
+
+		if("-i" in muxer_data["core_query"]):
+			return muxer_data
 		else:
 			return False
 		
@@ -105,57 +109,122 @@ def load_muxer(mux_file):
 	else:
 		print("No existe muxer")
 
-def run_muxer_single(muxer_query_raw,clip_name,local_dest_folder,render_engine_path,render_engine):
-	""" params (muxer_query_raw,clip_name,local_dest_folder,render_engine_path,render_engine) """
-	ffmpeg_query = muxer_query_raw.replace("$i_video",clip_name)
-	extension = os.path.splitext(clip_name)[1]
-	clip_name_not_Ext = os.path.splitext(clip_name) [0]
-	local_dest = local_dest_folder + clip_name_not_Ext
-	ffmpeg_query = render_engine_path+render_engine+" "+ffmpeg_query.replace("$o_video",local_dest)
-	
-	if(os.path.exists(render_engine_path+render_engine)):
-		p = subprocess.Popen(ffmpeg_query)
-		p.wait()
-	else:
-		print("No se encuentra el motor de render")
+def run_muxer_single(muxer,clip_name,local_dest_folder,render_engine_path,render_engine):
+	""" params (muxer,clip_name,local_dest_folder,render_engine_path,render_engine) """
+	if(muxer["type"] == "single"):
+		return_val = {"success":False}
+		ffmpeg_query = muxer["core_query"].replace("$i_video",clip_name)
+		extension = os.path.splitext(clip_name)[1]
+		clip_name_not_Ext = os.path.splitext(clip_name) [0]
+		local_dest = local_dest_folder + os.path.basename(clip_name_not_Ext) +"."+ muxer["render_ext"]
+		ffmpeg_query = render_engine_path+render_engine+" "+ffmpeg_query.replace("$o_video",local_dest)
+		
+		if(os.path.exists(clip_name)):
+			# print("Existe Clip")
+			print(render_engine_path+render_engine)
+			if(os.path.exists(render_engine_path+render_engine)):
+				
+				p = subprocess.Popen(ffmpeg_query)
+				p.wait()
+				if(os.path.exists(local_dest)):
+					return_val["result"] = local_dest
+					return_val["success"] = True
 
-	return ffmpeg_query
+				else:
+					return_val["result"] = "bad_rednder"
+					
+			else:
+				# print("No se encuentra el motor de render")
+				return_val["result"] = "missing_render"
+		else:
+			# print("No existe el clip")
+			return_val["result"] = "missing_clip"
+
+		# print("local_dest",local_dest)
+	else:
+		return_val["result"] = "invalid muxer type"
+
+
+
+	return return_val
 
 
 if __name__ == '__main__':
 	
 	time_metric = TimeMetrics()
 	time_metric.init()
-	common_utils_test()
+	# common_utils_test()
 
+	# Program vars
+	continue_runing = True
 
 	# Cargar la configuración 
 	conf = load_conf("conf.json")
+	if(conf != False):
 
-	## Parametros de cmd
-	muxer_file = "universal_h264"
-	origin_path = "Y:\\Noticieros Octubre 2018\\Notis 011018"
-	# origin_path = "C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf"
+		conf_keys_required = ["min_original_part_represent_trust","min_clip_size_for_transcode","local_dest_folder","render_engine_path","render_engine","muxer","muxer_folder"]
+		continue_runing = validate_conf_data(conf_keys_required,conf)
 
-	clips_to_trans = get_transcode_clips_list(origin_path)
+		if(continue_runing):
+			# transcode vars
+			min_clip_size_for_transcode = conf["min_clip_size_for_transcode"]
+			transcoding_jobs = []
 
-	# print(clips_to_trans)
-	print("Clips:",len(clips_to_trans["clips"])," total_size:",clips_to_trans["total_size"])
 
-	if(not ".mux" in muxer_file):
-		muxer_file = muxer_file + ".mux"
+			## Parametros de cmd
+			muxer_file = "gxf_h264"
+			# muxer_file = "avi"
+			# origin_path = "Y:\\Noticieros Octubre 2018\\Notis 011018"
+			# origin_path = "C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf"
+			origin_path = "C:\\Users\\ennima\\Desktop\\ffXperiments\\mxf_test_archive"
 
-	for clip in clips_to_trans["clips"]:
-		# print(clip["path"]+"\\"+clip["name"])
-		time_metric_clip = TimeMetrics()
-		time_metric_clip.init()
-		trans_clip = clip["path"]+"\\"+clip["name"]
-		muxer_query = load_muxer(muxer_file)
-		transcode_query = run_muxer_single(muxer_query,trans_clip,conf["local_dest_folder"],conf["render_engine_path"],conf["render_engine"])
-		print(transcode_query)
-		sleep(1000/1000)
-		print(time_metric_clip.get_elapsed_time())
+			clips_to_trans = get_transcode_clips_list(origin_path)
 
+			# print(clips_to_trans)
+			print("Clips:",len(clips_to_trans["clips"])," total_size:",clips_to_trans["total_size"])
+
+			if(not ".mux" in muxer_file):
+				muxer_file = muxer_file + ".mux"
+
+			
+			for clip in clips_to_trans["clips"]:
+				time_metric_clip = TimeMetrics()
+				time_metric_clip.init()
+				trans_clip = clip["path"]+"\\"+clip["name"]
+				print("Size:", clip["size"])
+				if(clip["size"] < min_clip_size_for_transcode):
+					print("El clip no contiene información")
+				else:
+					muxer_query = load_muxer(conf["muxer_folder"]+muxer_file)
+					# print(muxer_query)
+					transcode_work = run_muxer_single(muxer_query,trans_clip,conf["local_dest_folder"],conf["render_engine_path"],conf["render_engine"])
+					# print(transcode_work)
+					if(transcode_work["success"]):
+						trans_clip_size = os.path.getsize(transcode_work["result"])
+						trans_result = {"path":os.path.dirname(transcode_work["result"]),"name":os.path.basename(transcode_work["result"]),"size":trans_clip_size}
+						
+						original_part_represent = percentage(clip["size"],trans_result["size"])
+						reduction = 100 - original_part_represent
+						
+						trans_job_log = {}
+						if(original_part_represent < conf["min_original_part_represent_trust"]):
+							print("## Warning ## Posible fallo al transcodificar, revise que el material está completo y bien formado.")
+							trans_job_log = {"type":"warning","message":"Posible fallo al transcodificar, revise que el material está completo y bien formado."}
+						
+						trans_job = {"original_clip":clip,"final_clip":trans_result,"original_part_represent":original_part_represent,"reduction":reduction,"time_of_job":time_metric_clip.get_elapsed_time(),"trans_job_log":trans_job_log}
+						# print(trans_job)
+						transcoding_jobs.append(trans_job)
+			
+				# break
+				
+
+			print(transcoding_jobs)
+		
+		else:
+			print("Faltan algunos parametros de configuración.")
+
+	else:
+		print("Problema al cargar configuración.")
 
 	print(time_metric.get_elapsed_time())
 

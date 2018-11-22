@@ -1,32 +1,21 @@
 {
-	"user":"media manager"
-	,"data_path":"C:\\Users\\Ingest\\Documents\\dev\\tranfer_stratus_ist\\hitory_lists\\restore_datax.csv"
-	,"history_path":"C:\\Users\\Ingest\\Documents\\dev\\tranfer_stratus_ist\\hitory_lists\\"
-	,"origin_ftp_server":{
-		"host":"SMEX-FTP1"
-		,"user":"mxfmovie"
-		,"pass":""
-		,"db_id":1
+	"client":{
+		"name": "mxf_mp4_istorage_1"
+		,"type": "massive_transcoder"
 	}
-	,"origin_pxy_server":"W"
-	,"origin_format":1
-	,"origin_db_id":1
-	,"dest_ftp_server":{
-		"host":"DVCPRO2"
-		,"user":"dvcpro"
-		,"pass":"dvcpro01"
-		,"db_id":5
-	}
-	,"dest_folder":"array1/dvcpro/notis2017"
-	,"dest_db_id":5
-	,"istorage_api_store_clip":"http://API-SVR:3001/store_clip"
-	,"istorage_api":"http://API-SVR:3001"
+	,"istorage_api_servers":[
+								{
+									"host": "API-SVR"
+									,"port": "3001"
+								}
+							]
+	
 	,"local_temp_folder":"C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf\\exp\\render\\"
 	,"local_dest_folder":"C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf\\exp\\render\\"
 	,"muxer_folder":"C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf\\exp\\"
 	,"muxer":"universal_h264"
-	,"render_engine_path":""
-	,"render_engine": "ffmpeg"
-	,"default_origin_path":"V:/PlayToAir"
-	,"default_origin_path_tare":"V:/"
+	,"render_engine_path":"C:\\Users\\ennima\\Desktop\\ffXperiments\\"
+	,"render_engine": "ffmpeg.exe"
+	,"min_clip_size_for_transcode": 10000
+	,"min_original_part_represent_trust": 6
 }

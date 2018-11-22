@@ -1,4 +1,4 @@
 {
-	"video":["mxf","mov","avi","mp4","mpg","mpeg","ogg","ogv"]
+	"video":["mxf","mov","avi","mp4","mpg","mpeg","ogg","ogv","gxf"]
 	,"audio":["wav","flac","ogg","oga"]
 }

@@ -1,5 +1,6 @@
 {
-	"name":"universal_h264"
+	"muxer_version_schema":"2.0"
+	,"name":"universal_h264"
 	,"type":"single"
 	,"render_ext": "mp4"
 	,"core_query": "-y -i \"$i_video\" \"$o_video\""

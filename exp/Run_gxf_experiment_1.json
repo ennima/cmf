@@ -1,0 +1,62 @@
+[
+  {
+    "original_clip": {
+      "path": "C:\\Users\\ennima\\Desktop\\ffXperiments\\mxf_test_archive",
+      "name": "APOYO HEY-APOYO_DF005XL3.gxf",
+      "size": 83456396
+    },
+    "final_clip": {
+      "path": "C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf\\exp\\render",
+      "name": "APOYO HEY-APOYO_DF005XL3.mp4",
+      "size": 14221610
+    },
+    "original_part_represent": 17.040767013231676,
+    "reduction": 82.95923298676833,
+    "time_of_job": {
+      "seconds": 41.21625900268555,
+      "string": "00:00:41"
+    },
+    "trans_job_log": {}
+  },
+  {
+    "original_clip": {
+      "path": "C:\\Users\\ennima\\Desktop\\ffXperiments\\mxf_test_archive",
+      "name": "MORGANA VW-VOWALL_DF0058M3.gxf",
+      "size": 39919992
+    },
+    "final_clip": {
+      "path": "C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf\\exp\\render",
+      "name": "MORGANA VW-VOWALL_DF0058M3.mp4",
+      "size": 768935
+    },
+    "original_part_represent": 1.9261902657695924,
+    "reduction": 98.07380973423041,
+    "time_of_job": {
+      "seconds": 10.597647666931152,
+      "string": "00:00:10"
+    },
+    "trans_job_log": {
+      "type": "warning",
+      "message": "Posible fallo al transcodificar, revise que el material está completo y bien formado."
+    }
+  },
+  {
+    "original_clip": {
+      "path": "C:\\Users\\ennima\\Desktop\\ffXperiments\\mxf_test_archive",
+      "name": "THE POST-VO_DF005U4H.gxf",
+      "size": 76905292
+    },
+    "final_clip": {
+      "path": "C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf\\exp\\render",
+      "name": "THE POST-VO_DF005U4H.mp4",
+      "size": 11056592
+    },
+    "original_part_represent": 14.376893595306809,
+    "reduction": 85.62310640469319,
+    "time_of_job": {
+      "seconds": 38.53291940689087,
+      "string": "00:00:38"
+    },
+    "trans_job_log": {}
+  }
+]
