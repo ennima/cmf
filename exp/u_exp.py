@@ -1,13 +1,6 @@
 import os, sys
-# import pandas as pd
-# from ftplib import FTP
-# from ftplib import all_errors
-# from subprocess import call
 from time import time as time_i
-# import time
 from datetime import datetime
-# # import sockett#
-
 from shutil import copyfile
 from pathlib import Path
 import subprocess
