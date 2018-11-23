@@ -1,7 +1,7 @@
 {
 	"client":{
-		"name": "mxf_mp4_istorage_1"
-		,"type": "massive"
+		"name": "media_manager_1"
+		,"type": "local"
 	}
 	,"istorage_api_servers":[
 								{
@@ -14,7 +14,7 @@
 	,"local_temp_folder":"C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf\\exp\\render\\"
 	,"local_dest_folder":"C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf\\exp\\render\\"
 	,"muxer_folder":"C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf\\exp\\"
-	,"muxer":"universal_h264.mux"
+	,"muxer":"universal_h264"
 	,"render_engine_path":"C:\\Users\\ennima\\Desktop\\ffXperiments\\"
 	,"render_engine": "ffmpeg.exe"
 	,"min_clip_size_for_transcode": 10000

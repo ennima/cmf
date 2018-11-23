@@ -1,7 +1,13 @@
 from ftplib import FTP
 from ftplib import all_errors
 import json
-import os
+import os,sys
+
+import subprocess
+sys.path.append('../trans')
+from time_metrics import *
+
+
 def common_utils_test():
 	print("common_utils_test ok")
 
