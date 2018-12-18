@@ -1,0 +1,4 @@
+{
+	"command": "python sample_cmd.py"
+	,"params":["param1","param2","param3"]
+}

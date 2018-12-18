@@ -93,7 +93,7 @@ if __name__ == '__main__':
 				if(not ".mux" in muxer_file1):
 					muxer_file1 = muxer_file1 + ".mux"
 				
-				jobs = massive_muxing_single_api(conf,origin_path1, muxer_file1, clips_to_trans1,ingest_client_1)
+				# jobs = massive_muxing_single_api(conf,origin_path1, muxer_file1, clips_to_trans1,ingest_client_1)
 				
 				ingest_client_1.online()
 			

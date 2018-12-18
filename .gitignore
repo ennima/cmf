@@ -1,0 +1,10 @@
+__pycache__/
+build/
+dist/
+*.mp4
+*.mov
+*.mp3
+*.flac
+*.wav
+*.mts
+*.mxf

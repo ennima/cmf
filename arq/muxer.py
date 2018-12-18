@@ -7,25 +7,30 @@ sys.path.append('../trans')
 from time_metrics import *
 
 
-
+print("muxer")
 def validate_clip(clip):
 	clip_type = ""
 	media_know_ext = load_conf("media_know.json")
-	extension = os.path.splitext(clip)[1].replace(".","")
-	is_video = [video for video in media_know_ext["video"] if video == extension]
-		
-	if(len(is_video) != 0):
-		# print("Puede ser video")
-		clip_type = "video"
+	# print("MediaKnow:",media_know_ext)
+	if(media_know_ext == False):
+		print("No se encontró la configuración: media_know")
+		clip_type = False
 	else:
-		# print("No es video")
-		is_audio = [audio for audio in media_know_ext["audio"] if audio == extension]
-		if(len(is_audio) != 0):
-			# print("Puede ser audio")
-			clip_type = "audio"
+		extension = os.path.splitext(clip)[1].replace(".","")
+		is_video = [video for video in media_know_ext["video"] if video == extension.lower()]
+			
+		if(len(is_video) != 0):
+			# print("Puede ser video")
+			clip_type = "video"
 		else:
-			# print("No es audio")
-			clip_type = False
+			# print("No es video")
+			is_audio = [audio for audio in media_know_ext["audio"] if audio == extension.lower()]
+			if(len(is_audio) != 0):
+				# print("Puede ser audio")
+				clip_type = "audio"
+			else:
+				# print("No es audio")
+				clip_type = False
 
 	return clip_type
 
@@ -183,14 +188,21 @@ def massive_muxing_single_api(conf,origin_path,muxer_file,clips_to_trans,ingest_
 				if(original_part_represent < conf["min_original_part_represent_trust"]):
 					print("## Warning ## Posible fallo al transcodificar, revise que el material está completo y bien formado.")
 					trans_job_log = {"type":"warning","message":"Posible fallo al transcodificar, revise que el material está completo y bien formado."}
-				
-				trans_job = {"original_clip":clip,"final_clip":trans_result,"original_part_represent":original_part_represent,"reduction":reduction,"time_of_job":time_metric_clip.get_elapsed_time(),"trans_job_log":trans_job_log}
+				time_of_working = time_metric_clip.get_elapsed_time()
+				print("------------------------------------------------TIME OF WORKING:",time_of_working)
+				trans_job = {"original_clip":clip,"final_clip":trans_result,"original_part_represent":original_part_represent,"reduction":reduction,"time_of_job":time_of_working,"trans_job_log":trans_job_log}
 				# print(trans_job)
 				transcoding_jobs.append(trans_job)
 
+				clips_totales = len(clips_to_trans["clips"])
 				clips_restantes = clips_restantes - 1
-				ingest_client_obj.ingesting("Faltan " + str(clips_restantes)+" de " + str(len(clips_to_trans["clips"])))
-	
+				clips_actuales = clips_totales - clips_restantes
+				progress = percentage(clips_totales,clips_actuales)
+				ingesting_string ="Ingestando: "+ "{0:.2}".format(str(progress))+"% "+" - "+str(clips_actuales) +" de " + str(clips_totales) + " clips"
+				#"Faltan " + str(clips_restantes)+" de " + str(len(clips_to_trans["clips"]))
+				ingest_client_obj.ingesting(ingesting_string)
+				ingest_client_obj.add_job()
+				ingest_client_obj.add_ingest_job(json.dumps(clip),json.dumps(trans_result),time_of_working['seconds'],reduction,original_part_represent, json.dumps(trans_job_log))
 		# break
 		
 

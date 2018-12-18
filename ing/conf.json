@@ -1,7 +1,7 @@
 {
   "client": {
-    "name": "M_DF_mas-1921684893-edcafcd4b7ef-1543020613.9519026",
-    "type": "massive"
+    "name": "M_DF_loc-19216819726-00101832a923-1543627131.2284262",
+    "type": "local"
   },
   "istorage_api_servers": [
     {
@@ -13,7 +13,7 @@
   "local_temp_folder": "C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf\\exp\\render\\",
   "local_dest_folder": "C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf\\exp\\render\\",
   "muxer_folder": "C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\cmf\\exp\\",
-  "muxer": "universal_h264.mux",
+  "muxer": "avci.json",
   "render_engine_path": "C:\\Users\\ennima\\Desktop\\ffXperiments\\",
   "render_engine": "ffmpeg.exe",
   "min_clip_size_for_transcode": 10000,

@@ -1,0 +1,7 @@
+{
+	"muxer_version_schema":"2.0"
+	,"name":"gxf_h264"
+	,"type":"single"
+	,"render_ext": "mp4"
+	,"core_query": "-y -i \"$i_video\" -vf scale=1920x1080 -aspect 16:9 \"$o_video\""
+}

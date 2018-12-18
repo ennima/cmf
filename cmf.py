@@ -27,21 +27,20 @@ class Cmf(object):
 		# print(cmf_path)
 		metadata_file = os.path.basename(cmf_path).replace(".cmf",".xml")
 		# print(metadata_file)
-		metadata_file_path = cmf_path+"\\"+metadata_file
-		if(os.path.exists(metadata_file_path)):
+		self.metadata_file_path = cmf_path+"\\"+metadata_file
+		if(os.path.exists(self.metadata_file_path)):
 			try:
-				self.tree = ET.parse(metadata_file_path)
+				self.tree = ET.parse(self.metadata_file_path)
 			except:
 				print("except -------------")
 			else:
 				self.root = self.tree.getroot()
 				self._is_xml_load = True
 		else:
-			pass
-			# print("ERROR: No existe el cmf:",metadata_file_path)
+			# pass
+			print("ERROR: No existe el cmf:",self.metadata_file_path)
 
 
-	
 	def get_asset_id(self):
 		return self.root.attrib['AssetId']
 
@@ -95,8 +94,8 @@ class Cmf(object):
 	
 		
 
-# cmf = "X:\\Recup\\ENTREVISTA REBECA DE ALBA\\ENTREVISTA REBECA DE ALBA(2).cmf"
+# cmf = "V:\\media\\PlayToAir\\VOZ NINA MIGRANTE FT.cmf"
 # my_cmf = Cmf(cmf)
-# print(my_cmf.get_audio_format())
-# print(my_cmf.get_construction())
+# print(my_cmf.get_asset_id())
+
 

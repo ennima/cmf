@@ -1,0 +1,5 @@
+pyinstaller u_exp.spec --onefile
+
+pyinstaller install_ingest_client.spec --onefile
+
+pyinstaller command_funnel_one_param.spec --onefile

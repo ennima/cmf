@@ -78,12 +78,18 @@ class IngestClient(object):
 	def start(self):
 		validate = self._validate_client()
 		if(validate == "loaded"):
-			return True
+			if(self._allow):
+				return True
+				self.log = "not allow"
+			else:
+				return False
 		else:
 			self.log = validate
 			return False
 
+	
 	def add(self,name,cli_type):
+		""" Create a new ingest client on db"""
 		self.ip = socket.gethostbyname(socket.gethostname())
 		self.name = name
 		self.host_name = socket.gethostname()
@@ -101,9 +107,11 @@ class IngestClient(object):
 			return False
 
 	def get_data_for_conf(self):
+		""" Return dict ready to append to conf"""
 		return {"client":{"name":self.name,"type":self.cli_type}}
 
 	def add_job(self):
+		""" ++ job to Ingest Client Table Row column jobs """
 		self.jobs += 1
 		playload = {"jobs":self.jobs,"ingest_client_id":self.uid}
 		result = self._post("set_ingest_client_jobs",playload)
@@ -111,8 +119,10 @@ class IngestClient(object):
 			return True
 		else:
 			return False
+	
 
 	def remove_job(self):
+		""" -- job to Ingest Client Table Row column jobs """
 		self.jobs = self.jobs - 1
 		if(self.jobs < 0):
 			self.jobs = 0
@@ -123,6 +133,20 @@ class IngestClient(object):
 			return True
 		else:
 			return False
+
+	
+
+
+	def add_ingest_job(self,origin_clip,dest_clip,time,reduction,original_represents, job_log):
+		""" Add a job to the table ingest jobs"""
+		# print("---------------------------------------Add TIME: ",time)
+		playload = {"ingest_client_id":self.uid,"origin_clip":origin_clip,"dest_clip":dest_clip,"time":time,"reduction":reduction,"original_represents":original_represents,"job_log":job_log}
+		result = self._post("ingest_jobs/add",playload)
+		if(result["rows"]["affectedRows"] == 1):
+			return True
+		else:
+			return False
+
 
 	def ingesting(self,num_clips):
 		playload = {"num_clips":num_clips,"ingest_client_id":self.uid}
